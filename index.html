@@ -2,215 +2,331 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AI Video Studio</title>
 
 <style>
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #0b1020;
-  color: white;
-}
-
-header {
-  padding: 20px;
-  background: #121a30;
-  border-bottom: 1px solid #29334d;
-}
-
-header h1 {
-  margin: 0;
-  font-size: 25px;
-  color: #8b9cff;
-}
-
-header p {
-  color: #b5bfd5;
-  font-size: 14px;
-}
-
-main {
-  max-width: 650px;
-  margin: auto;
-  padding: 20px;
-}
-
-.card {
-  background: #151e33;
-  border: 1px solid #293650;
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 18px;
-}
-
-h2 {
-  font-size: 21px;
-  margin-top: 0;
-}
-
-label {
-  display: block;
-  margin: 18px 0 8px;
-  font-size: 14px;
-  color: #d7def0;
-}
-
-textarea, select, input {
-  width: 100%;
-  padding: 13px;
-  border-radius: 9px;
-  border: 1px solid #35435f;
-  background: #0d1426;
-  color: white;
-  font-size: 15px;
-}
-
-textarea {
-  min-height: 120px;
-  resize: vertical;
-}
-
-button {
-  width: 100%;
-  padding: 15px;
-  margin-top: 20px;
-  border: none;
-  border-radius: 10px;
-  background: #6578ff;
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-button:active {
-  opacity: 0.8;
-}
-
-.note {
-  color: #aebbd4;
-  font-size: 13px;
-  line-height: 1.6;
-}
-
-#status {
-  margin-top: 16px;
-  padding: 12px;
-  border-radius: 9px;
-  background: #0d1426;
-  color: #b9c6ff;
-  line-height: 1.5;
-  display: none;
-}
-
-footer {
-  text-align: center;
-  padding: 20px;
-  color: #8793ad;
-  font-size: 12px;
-}
+*{box-sizing:border-box}
+body{margin:0;background:#0b1020;color:#fff;font-family:Arial,sans-serif}
+header{padding:20px;background:#151e33;border-bottom:1px solid #34405b}
+header h1{margin:0;color:#a5b4fc;font-size:25px}
+header p,.note{color:#aebbd4;font-size:13px;line-height:1.6}
+main{max-width:700px;margin:auto;padding:15px}
+.card{background:#151e33;border:1px solid #34405b;border-radius:15px;padding:17px;margin-bottom:16px}
+h2{font-size:19px;margin-top:0}
+label{display:block;margin:16px 0 7px;font-size:14px;color:#dce3f5}
+input,select,textarea{width:100%;padding:12px;border:1px solid #3a4866;border-radius:9px;background:#0b1427;color:white;font-size:15px}
+textarea{min-height:110px;resize:vertical}
+button{padding:13px;border:0;border-radius:9px;background:#687cff;color:white;font-weight:bold;font-size:15px;cursor:pointer}
+button:active{opacity:.8}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.full{width:100%;margin-top:14px}
+.secondary{background:#293750}
+#status{display:none;margin-top:14px;padding:12px;background:#0b1427;border-radius:9px;line-height:1.6;font-size:14px}
+#imagePreview{display:none;width:100%;max-height:300px;object-fit:contain;margin-top:12px;border-radius:10px}
+.badge{display:inline-block;background:#293750;padding:6px 10px;border-radius:20px;font-size:12px;margin-bottom:12px}
+footer{text-align:center;color:#8592ad;font-size:12px;padding:20px}
 </style>
 </head>
 
 <body>
-
 <header>
-  <h1>🎬 AI Video Studio</h1>
-  <p>Create your next video with AI</p>
+<h1>🎬 AI Video Studio</h1>
+<p>Images • Videos • Animation • Voice • Audio</p>
+<span class="badge">Personal Creator Studio</span>
 </header>
 
 <main>
-  <section class="card">
-    <h2>Create a Video</h2>
+<section class="card">
+<h2>✨ Create with AI</h2>
 
-    <label for="prompt">Describe your video</label>
-    <textarea id="prompt" placeholder="Example: A beautiful Indian village during monsoon, cinematic lighting, trees moving in the wind..."></textarea>
+<label for="mode">What do you want to create?</label>
+<select id="mode" onchange="changeMode()">
+<option value="textvideo">Text to Video</option>
+<option value="textimage">Text to Image</option>
+<option value="imagevideo">Image to Video</option>
+<option value="prompt">Improve My Prompt</option>
+</select>
 
-    <label for="style">Video Style</label>
-    <select id="style">
-      <option>Realistic Cinematic</option>
-      <option>2D Animation</option>
-      <option>3D Animation</option>
-      <option>Anime</option>
-      <option>Hand-Drawn Cartoon</option>
-      <option>Stick Figure</option>
-      <option>Fantasy</option>
-    </select>
+<label for="prompt">Describe your creation</label>
+<textarea id="prompt" placeholder="Describe the scene, characters, actions, camera movement and atmosphere..."></textarea>
 
-    <label for="duration">Video Duration</label>
-    <select id="duration">
-      <option value="10">10 seconds</option>
-      <option value="30">30 seconds</option>
-      <option value="60">1 minute</option>
-      <option value="180">3 minutes</option>
-      <option value="300">5 minutes</option>
-    </select>
+<div class="row">
+<button class="secondary" onclick="startVoice()">🎙️ Speak Prompt</button>
+<button class="secondary" onclick="pastePrompt()">📋 Paste Prompt</button>
+</div>
 
-    <label for="audio">Audio Options</label>
-    <select id="audio">
-      <option>Sound Effects</option>
-      <option>Sound Effects and AI Voice</option>
-      <option>Sound Effects and Background Music</option>
-      <option>Voice, Sound Effects and Music</option>
-      <option>No Audio</option>
-    </select>
+<p class="note">Speak your idea using your phone microphone, or paste a prompt you have already copied.</p>
 
-    <button onclick="generateVideo()">Generate Video</button>
+<div id="uploadArea" style="display:none">
+<label for="imageInput">Upload a reference image</label>
+<input id="imageInput" type="file" accept="image/*" onchange="previewImage()">
+<img id="imagePreview" alt="Image preview">
+</div>
+</section>
 
-    <div id="status"></div>
-  </section>
+<section class="card">
+<h2>🎨 Style & Appearance</h2>
 
-  <section class="card">
-    <h2>Your Videos</h2>
-    <p class="note">
-      Your generated videos will appear here once an AI video-generation
-      service and video storage are connected.
-    </p>
-  </section>
+<label for="style">Visual Style</label>
+<select id="style">
+<option>Realistic Cinematic</option>
+<option>Photorealistic</option>
+<option>2D Animation</option>
+<option>3D Animation</option>
+<option>Ghibli-inspired Hand-Drawn Animation</option>
+<option>Anime</option>
+<option>Cartoon</option>
+<option>Stick Figure</option>
+<option>Fantasy</option>
+<option>Indian Village Animation</option>
+<option>Devotional Art</option>
+<option>Watercolor Illustration</option>
+<option>Pixel Art</option>
+</select>
 
-  <section class="card">
-    <h2>Planned Features</h2>
-    <p class="note">
-      • Text-to-video generation<br>
-      • Multiple animation styles<br>
-      • Longer videos using multiple scenes<br>
-      • Character consistency<br>
-      • AI voice and sound effects<br>
-      • Cloud-based video processing
-    </p>
-  </section>
+<label for="ratio">Aspect Ratio</label>
+<select id="ratio">
+<option value="9:16">Portrait — 9:16</option>
+<option value="16:9">Landscape — 16:9</option>
+<option value="1:1">Square — 1:1</option>
+<option value="4:5">Portrait — 4:5</option>
+</select>
+
+<label for="quality">Quality</label>
+<select id="quality">
+<option>Standard</option>
+<option>High Quality</option>
+<option>Maximum Available</option>
+</select>
+
+<label for="background">Background / Location</label>
+<select id="background">
+<option>Choose from prompt</option>
+<option>Indian Village</option>
+<option>Nature & Forest</option>
+<option>Mountains & Waterfalls</option>
+<option>Modern City</option>
+<option>Temple & Devotional</option>
+<option>Rainy Weather</option>
+<option>Snowfall</option>
+<option>Beach & Ocean</option>
+<option>Rooftop & Moonlight</option>
+<option>Indoor Room</option>
+<option>Fantasy World</option>
+</select>
+</section>
+
+<section class="card">
+<h2>🎥 Video Settings</h2>
+
+<label for="duration">Duration</label>
+<select id="duration">
+<option value="5">5 seconds</option>
+<option value="10" selected>10 seconds</option>
+<option value="15">15 seconds</option>
+<option value="30">30 seconds</option>
+<option value="60">1 minute</option>
+<option value="180">3 minutes</option>
+<option value="300">5 minutes</option>
+</select>
+
+<label for="movement">Camera & Motion</label>
+<select id="movement">
+<option>Automatic from prompt</option>
+<option>Slow Cinematic Zoom</option>
+<option>Camera Pan</option>
+<option>Aerial Camera Movement</option>
+<option>Tracking Shot</option>
+<option>Wide Establishing Shot</option>
+<option>Close-up</option>
+<option>Dynamic Camera Movement</option>
+</select>
+
+<label for="consistency">Character Consistency</label>
+<select id="consistency">
+<option>Use reference image when supported</option>
+<option>Keep characters consistent across scenes</option>
+<option>Create new characters</option>
+</select>
+
+<label for="scenes">Scene Planning</label>
+<select id="scenes">
+<option>Single Scene</option>
+<option>Multiple Connected Scenes</option>
+<option>Storyboard for a Longer Video</option>
+</select>
+</section>
+
+<section class="card">
+<h2>🔊 Audio Studio</h2>
+
+<label for="audio">Audio Mode</label>
+<select id="audio">
+<option>No Audio</option>
+<option>Sound Effects Only</option>
+<option>Nature Sounds</option>
+<option>Village Ambience</option>
+<option>Cooking Sounds</option>
+<option>Rain, Wind & Thunder</option>
+<option>AI Voice / Narration</option>
+<option>Background Music</option>
+<option>Voice + Sound Effects</option>
+<option>Voice + Sound Effects + Music</option>
+</select>
+
+<label for="voice">Voice Language</label>
+<select id="voice">
+<option>None</option>
+<option>Hindi</option>
+<option>English</option>
+<option>Hinglish</option>
+<option>Punjabi</option>
+<option>Other — configure when supported</option>
+</select>
+
+<label for="sounds">Specific Sound Effects</label>
+<textarea id="sounds" placeholder="Example: birds chirping, leaves rustling, footsteps, utensils clinking..."></textarea>
+</section>
+
+<section class="card">
+<h2>🚀 Generate</h2>
+<p class="note">Your settings will be collected for the selected creation type.</p>
+<button class="full" onclick="generate()">✨ Generate Creation</button>
+<button class="full secondary" onclick="saveSettings()">💾 Save Settings</button>
+<button class="full secondary" onclick="copySettings()">📋 Copy Settings</button>
+<div id="status"></div>
+</section>
+
+<section class="card">
+<h2>📁 My Creations</h2>
+<p class="note">Your generated images and videos will appear here after a generation service and storage are connected.</p>
+</section>
 </main>
 
-<footer>
-  AI Video Studio — Early Development Version
-</footer>
+<footer>AI Video Studio • Personal Project • Development Version</footer>
 
 <script>
-function generateVideo() {
-  const prompt = document.getElementById("prompt").value.trim();
-  const style = document.getElementById("style").value;
-  const duration = document.getElementById("duration").value;
-  const audio = document.getElementById("audio").value;
-  const status = document.getElementById("status");
+function changeMode(){
+ const mode=document.getElementById("mode").value;
+ document.getElementById("uploadArea").style.display=
+ mode==="imagevideo"?"block":"none";
+ document.getElementById("status").style.display="none";
+}
 
-  status.style.display = "block";
+function previewImage(){
+ const file=document.getElementById("imageInput").files[0];
+ const img=document.getElementById("imagePreview");
+ if(!file)return;
+ if(!file.type.startsWith("image/")){
+ alert("Please select an image file.");
+ return;
+ }
+ img.src=URL.createObjectURL(file);
+ img.style.display="block";
+}
 
-  if (!prompt) {
-    status.textContent = "Please describe the video you want to create.";
-    return;
-  }
+function startVoice(){
+ const status=document.getElementById("status");
+ const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+ if(!SpeechRecognition){
+ alert("Voice input is not supported in this browser. Try Chrome and allow microphone access.");
+ return;
+ }
+ const recognition=new SpeechRecognition();
+ recognition.lang="hi-IN";
+ recognition.interimResults=false;
+ recognition.onstart=()=>{
+ status.style.display="block";
+ status.textContent="Listening... Speak your prompt now.";
+ };
+ recognition.onresult=(event)=>{
+ const spoken=event.results[0][0].transcript;
+ const box=document.getElementById("prompt");
+ box.value=box.value?box.value+" "+spoken:spoken;
+ status.textContent="Voice converted to text successfully.";
+ };
+ recognition.onerror=()=>{
+ status.textContent="Voice input failed. Check microphone permission and try again.";
+ };
+ recognition.start();
+}
 
-  status.textContent =
-    "Your settings are ready. Style: " + style +
-    ". Duration: " + duration + " seconds. Audio: " + audio +
-    ". The AI generation service is not connected yet.";
+async function pastePrompt(){
+ try{
+ const text=await navigator.clipboard.readText();
+ if(!text){
+ alert("Your clipboard is empty. Copy a prompt first.");
+ return;
+ }
+ const box=document.getElementById("prompt");
+ box.value=box.value?box.value+" "+text:text;
+ }catch(e){
+ alert("Clipboard access is blocked. Long-press the prompt box and tap Paste.");
+ }
+}
+
+function collectSettings(){
+ return {
+ mode:document.getElementById("mode").value,
+ prompt:document.getElementById("prompt").value.trim(),
+ style:document.getElementById("style").value,
+ aspectRatio:document.getElementById("ratio").value,
+ quality:document.getElementById("quality").value,
+ background:document.getElementById("background").value,
+ durationSeconds:document.getElementById("duration").value,
+ cameraMovement:document.getElementById("movement").value,
+ characterConsistency:document.getElementById("consistency").value,
+ scenePlanning:document.getElementById("scenes").value,
+ audio:document.getElementById("audio").value,
+ voiceLanguage:document.getElementById("voice").value,
+ soundEffects:document.getElementById("sounds").value
+ };
+}
+
+function generate(){
+ const settings=collectSettings();
+ const status=document.getElementById("status");
+ status.style.display="block";
+ if(!settings.prompt){
+ status.textContent="Please enter or speak a prompt first.";
+ return;
+ }
+ if(settings.mode==="imagevideo"&&!document.getElementById("imageInput").files.length){
+ status.textContent="Please upload a reference image first.";
+ return;
+ }
+ if(settings.mode==="prompt"){
+ status.textContent="Your prompt is ready to edit or copy. Automatic AI prompt improvement will require an AI service connection.";
+ return;
+ }
+ status.textContent="Your settings are ready. Real image/video generation is not connected yet. The next step is connecting a secure AI generation service.";
+}
+
+function saveSettings(){
+ const blob=new Blob([JSON.stringify(collectSettings(),null,2)],{type:"application/json"});
+ const a=document.createElement("a");
+ a.href=URL.createObjectURL(blob);
+ a.download="ai-video-settings.json";
+ a.click();
+ URL.revokeObjectURL(a.href);
+}
+
+async function copySettings(){
+ const text=JSON.stringify(collectSettings(),null,2);
+ try{
+ await navigator.clipboard.writeText(text);
+ alert("Settings copied.");
+ }catch(e){
+ const area=document.createElement("textarea");
+ area.value=text;
+ document.body.appendChild(area);
+ area.select();
+ document.execCommand("copy");
+ area.remove();
+ alert("Settings copied.");
+ }
 }
 </script>
-
 </body>
   </html>
