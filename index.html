@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Video Studio</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0b1020;
+  color: white;
+}
+
+header {
+  padding: 20px;
+  background: #121a30;
+  border-bottom: 1px solid #29334d;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 25px;
+  color: #8b9cff;
+}
+
+header p {
+  color: #b5bfd5;
+  font-size: 14px;
+}
+
+main {
+  max-width: 650px;
+  margin: auto;
+  padding: 20px;
+}
+
+.card {
+  background: #151e33;
+  border: 1px solid #293650;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 18px;
+}
+
+h2 {
+  font-size: 21px;
+  margin-top: 0;
+}
+
+label {
+  display: block;
+  margin: 18px 0 8px;
+  font-size: 14px;
+  color: #d7def0;
+}
+
+textarea, select, input {
+  width: 100%;
+  padding: 13px;
+  border-radius: 9px;
+  border: 1px solid #35435f;
+  background: #0d1426;
+  color: white;
+  font-size: 15px;
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+button {
+  width: 100%;
+  padding: 15px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 10px;
+  background: #6578ff;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:active {
+  opacity: 0.8;
+}
+
+.note {
+  color: #aebbd4;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+#status {
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 9px;
+  background: #0d1426;
+  color: #b9c6ff;
+  line-height: 1.5;
+  display: none;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  color: #8793ad;
+  font-size: 12px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>🎬 AI Video Studio</h1>
+  <p>Create your next video with AI</p>
+</header>
+
+<main>
+  <section class="card">
+    <h2>Create a Video</h2>
+
+    <label for="prompt">Describe your video</label>
+    <textarea id="prompt" placeholder="Example: A beautiful Indian village during monsoon, cinematic lighting, trees moving in the wind..."></textarea>
+
+    <label for="style">Video Style</label>
+    <select id="style">
+      <option>Realistic Cinematic</option>
+      <option>2D Animation</option>
+      <option>3D Animation</option>
+      <option>Anime</option>
+      <option>Hand-Drawn Cartoon</option>
+      <option>Stick Figure</option>
+      <option>Fantasy</option>
+    </select>
+
+    <label for="duration">Video Duration</label>
+    <select id="duration">
+      <option value="10">10 seconds</option>
+      <option value="30">30 seconds</option>
+      <option value="60">1 minute</option>
+      <option value="180">3 minutes</option>
+      <option value="300">5 minutes</option>
+    </select>
+
+    <label for="audio">Audio Options</label>
+    <select id="audio">
+      <option>Sound Effects</option>
+      <option>Sound Effects and AI Voice</option>
+      <option>Sound Effects and Background Music</option>
+      <option>Voice, Sound Effects and Music</option>
+      <option>No Audio</option>
+    </select>
+
+    <button onclick="generateVideo()">Generate Video</button>
+
+    <div id="status"></div>
+  </section>
+
+  <section class="card">
+    <h2>Your Videos</h2>
+    <p class="note">
+      Your generated videos will appear here once an AI video-generation
+      service and video storage are connected.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>Planned Features</h2>
+    <p class="note">
+      • Text-to-video generation<br>
+      • Multiple animation styles<br>
+      • Longer videos using multiple scenes<br>
+      • Character consistency<br>
+      • AI voice and sound effects<br>
+      • Cloud-based video processing
+    </p>
+  </section>
+</main>
+
+<footer>
+  AI Video Studio — Early Development Version
+</footer>
+
+<script>
+function generateVideo() {
+  const prompt = document.getElementById("prompt").value.trim();
+  const style = document.getElementById("style").value;
+  const duration = document.getElementById("duration").value;
+  const audio = document.getElementById("audio").value;
+  const status = document.getElementById("status");
+
+  status.style.display = "block";
+
+  if (!prompt) {
+    status.textContent = "Please describe the video you want to create.";
+    return;
+  }
+
+  status.textContent =
+    "Your settings are ready. Style: " + style +
+    ". Duration: " + duration + " seconds. Audio: " + audio +
+    ". The AI generation service is not connected yet.";
+}
+</script>
+
+</body>
+  </html>
